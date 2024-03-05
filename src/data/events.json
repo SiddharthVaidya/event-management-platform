@@ -1,0 +1,16 @@
+{
+    "events": [
+        {
+            "id": 1,
+            "event_name": "Stand-up Comedy Show",
+            "venue": "ABCD Auditorium",
+            "date": "2024-03-14",
+            "time": "18:00:00",
+            "participants": [{
+                "name": "Siddharth",
+                "email": "siddharth@gmail.com"
+            }]
+        }
+
+    ]
+}

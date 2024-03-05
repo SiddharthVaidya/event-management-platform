@@ -1,0 +1,16 @@
+{
+    "users": [
+        {
+            "email": "example@gmail.com",
+            "password": "dfkajsdhflkshdlkfhjh7",
+            "type": "ADMIN",
+            "id": 1
+        },
+        {
+            "email": "siddharth@gmail.com",
+            "password": "$2b$10$2iK/lZDIMoKv6bbZZoR8mOGyVSt0Wede5qTQbPyIc6FlbAJELQktu",
+            "type": "ADMIN",
+            "id": 2
+        }
+    ]
+}
