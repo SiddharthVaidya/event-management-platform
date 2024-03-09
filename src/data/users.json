@@ -11,6 +11,18 @@
             "password": "$2b$10$2iK/lZDIMoKv6bbZZoR8mOGyVSt0Wede5qTQbPyIc6FlbAJELQktu",
             "type": "ADMIN",
             "id": 2
+        },
+        {
+            "email": "siddhartvaidya164@gmail.com",
+            "password": "$2b$10$PgWOB4WsoYWZ.m/nKDefJ.lHE4aN0Z/9KL58PXhqK2dIZ/Ax2bAJa",
+            "type": "USER",
+            "id": "095990ba-8ed4-4219-ad1b-d7043adcf365"
+        },
+        {
+            "email": "siddhart@gmail.com",
+            "password": "$2b$10$pgi4P469HKJeXbFGBCf2c.nXqdTnuDGZWZBRkRZ3.mEZTtLpQsfSS",
+            "type": "USER",
+            "id": "28fc717c-c446-47e9-80ef-ed7fc6c34d4a"
         }
     ]
 }

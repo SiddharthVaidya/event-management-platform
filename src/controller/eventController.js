@@ -1,18 +1,91 @@
-const fs = require('fs');
+
+const {v4 : uuidv4 } =  require('uuid')
+const service = require('../service/emailService')
+const Validator = require('../utils/Validator')
+const Io = require('../utils/ReadWrite')
+
+const EVENT_PATH = "./src/data/events.json"
+
 const getEvents = (req, res) =>{
-    let data = fs.readFileSync("./src/data/events.json", "utf8");
-    data = JSON.parse(data)
+    let data = Io.read(EVENT_PATH)
     return res.status(200).json({data: data})
 }
-// const postNewEvents = (req, res) =>{
-//     if(req.body.type === "USER"){
-//         return res.status(403).json({message: "Unauthorized access"})
-//     }
-//     let validationStatus = Validator.validateNewEvent(req.body)
-//     if(validationStatus.status === false){
-//         return res.status(400).json({message: `${validationStatus.message}`})
-//     }
-//     let 
+const postNewEvents = (req, res) =>{
+    if(req.body.user_type === "USER"){
+        return res.status(403).json({message: "Unauthorized access"})
+    }
+    let validationStatus = Validator.validateNewEvent(req.body)
+    if(validationStatus.status === false){
+        return res.status(400).json({message: `${validationStatus.message}`})
+    }
+    let oldData = Io.read(EVENT_PATH)
+    oldData.events.push({...req.body, eventId: uuidv4() ,participants: []})
+    Io.write(EVENT_PATH, oldData)
+    return res.status(201).json({message: "New Event Added Successfully"})
+}
 
-// }
-module.exports = {getEvents}
+const deleteEvent = (req, res) =>{
+    if (req.body.user_type === "USER") {
+        return res.status(403).json({ message: "Unauthorized access" });
+    }
+    let params = req.params.id
+    if(!params){
+        return res.status(404).json({message: "Bad Request"})
+    }
+    let eventData = Io.read(EVENT_PATH)
+    let eventIndex = eventData.events.findIndex((event) => event.eventId === req.params.id)
+    console.log(eventIndex)
+    if(eventIndex === -1 || eventIndex === undefined){
+        return res.status(404).json({message: "Event Not Found"})
+    }
+    eventData.events.splice(eventIndex, 1)
+    Io.write(EVENT_PATH, eventData)
+    return res.status(201).json({message: "Event Deleted Successfully"})
+}
+
+const updateEvent = (req, res) => {
+    if (req.body.user_type === "USER") {
+      return res.status(403).json({ message: "Unauthorized access" });
+    }
+    let validationStatus = Validator.validateNewEvent(req.body);
+    if (validationStatus.status === false) {
+      return res.status(400).json({ message: `${validationStatus.message}` });
+    }
+    let oldData = Io.read(EVENT_PATH);
+    let eventIndex = oldData.events.findIndex((event) => event.eventId === req.params.id)
+    if (eventIndex === -1 || eventIndex === undefined) {
+      return res.status(404).json({ message: "Event Not Found" });
+    }
+    let newEventDetails = {
+        ...req.body, 
+        eventId: req.params.id, 
+        participants: oldData.events[eventIndex].participants}
+    oldData.events[eventIndex] = { ...oldData.events[eventIndex], ...newEventDetails}
+    Io.write(EVENT_PATH,oldData)
+    return res.status(201).json({message: "Event Updated Successfully"})
+}
+
+const newRegistrationEvent = async (req, res) =>{
+    let eventData = Io.read(EVENT_PATH)
+    let eventIndex = eventData.events.findIndex((event) => event.eventId === req.params.id)
+    if(eventIndex === -1 || eventIndex === undefined){
+        return res.status(404).json({message: "Event Not Found"})
+    }
+    const seats = eventData.events[eventIndex].seat
+    let participantList = eventData.events[eventIndex].participants
+    if(seats<=participantList.length){
+        return res.status(201).json({status: "Failed", message: "All seats are full"})
+    }
+    let validateParticipant = Validator.validateParticipant(req.body);
+    if(!validateParticipant.status){
+        return res.status(400).json({message: `${validateParticipant.message}`})
+    }
+    participantList.push(req.body)
+    eventData.events[eventIndex].participants = participantList
+    Io.write(EVENT_PATH, eventData)
+    var emailStatus = await service.confirmationEmail(
+        req.body.name, eventData.events[eventIndex], req.body.email)
+    res.status(201).json({message: "Registered Successfully"})
+}
+
+module.exports = {getEvents, postNewEvents, newRegistrationEvent, deleteEvent, updateEvent}

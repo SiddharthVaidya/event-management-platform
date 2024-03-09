@@ -1,16 +1,57 @@
 {
     "events": [
         {
-            "id": 1,
+            "eventId": "2",
             "event_name": "Stand-up Comedy Show",
             "venue": "ABCD Auditorium",
             "date": "2024-03-14",
             "time": "18:00:00",
-            "participants": [{
-                "name": "Siddharth",
-                "email": "siddharth@gmail.com"
-            }]
+            "seats": 20,
+            "participants": [
+                {
+                    "name": "Siddharth",
+                    "email": "siddharth@gmail.com"
+                }
+            ]
+        },
+        {
+            "event_name": "Dance Show",
+            "venue": "ABCD Auditorium",
+            "date": "2024-03-14",
+            "time": "18:00:00",
+            "seats": 30,
+            "eventId": "53a4fbc9-3a95-42ed-8ee6-e82e2dbfe364",
+            "participants": [
+                {
+                    "email": "siddhartvaidya164@gmail.com",
+                    "name": "Siddharth Vaidya",
+                    "contact": "6266740889"
+                }
+            ]
+        },
+        {
+            "event_name": "Singing Show",
+            "venue": "ABCD Auditorium",
+            "date": "2024-03-14",
+            "time": "20:00:00",
+            "seats": 20,
+            "eventId": "15803b36-ea67-46cb-b1e5-f2102887fbb8",
+            "participants": [
+                {
+                    "email": "siddhartvaidya164@gmail.com",
+                    "name": "Siddharth Vaidya",
+                    "contact": "6266740889"
+                }
+            ]
+        },
+        {
+            "event_name": "Modelling Show",
+            "venue": "ABCD Auditorium",
+            "date": "2024-03-14",
+            "time": "19:00:00",
+            "seats": 30,
+            "eventId": "754c6032-4ec8-47ce-a238-49223edcd12c",
+            "participants": []
         }
-
     ]
 }

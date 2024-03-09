@@ -1,13 +1,19 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const verifyLogin = (req, res, next) =>{
+  if(!req.headers.authorization){
+    return res.status(401).json({ message: "Unauthorized" });
+  }
     let token = req.headers.authorization.split(' ')[1]
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
    let token_data =  jwt.verify(token, process.env.AUTH_TOKEN);
    if(!token_data){
      return res.status(401).json({message : "Unauthorized"})
    }
-   req.body.user_type = token_data.type
-   req.body.user_email = token_data.user_email
+   req.body.user_type = token_data.body.type
+   req.body.user_email = token_data.body.user_email
    console.log(token_data)
    next()
 }
