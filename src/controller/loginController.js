@@ -12,7 +12,7 @@ const loginController = (req, res) =>{
     }
     let data = Io.read(USER_PATH)
     let userIndex = data.users.findIndex(user => user.email===body.email)
-    if(userIndex === undefined){
+    if(userIndex === undefined || userIndex === -1){
         return res.status(404).json({message: "User Not Found or Invalid Email"})
     }
     if(!Validator.matchPassword(body.password, data.users[userIndex].password)){

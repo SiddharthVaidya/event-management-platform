@@ -14,7 +14,6 @@ const verifyLogin = (req, res, next) =>{
    }
    req.body.user_type = token_data.body.type
    req.body.user_email = token_data.body.user_email
-   console.log(token_data)
    next()
 }
 

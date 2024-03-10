@@ -14,14 +14,16 @@ const postNewEvents = (req, res) =>{
     if(req.body.user_type === "USER"){
         return res.status(403).json({message: "Unauthorized access"})
     }
+    delete req.body.user_type
     let validationStatus = Validator.validateNewEvent(req.body)
     if(validationStatus.status === false){
         return res.status(400).json({message: `${validationStatus.message}`})
     }
     let oldData = Io.read(EVENT_PATH)
-    oldData.events.push({...req.body, eventId: uuidv4() ,participants: []})
+    let newEvent = { ...req.body, eventId: uuidv4(), participants: [] };
+    oldData.events.push(newEvent)
     Io.write(EVENT_PATH, oldData)
-    return res.status(201).json({message: "New Event Added Successfully"})
+    return res.status(201).json({data: newEvent, message: "New Event Added Successfully"})
 }
 
 const deleteEvent = (req, res) =>{
@@ -62,7 +64,7 @@ const updateEvent = (req, res) => {
         participants: oldData.events[eventIndex].participants}
     oldData.events[eventIndex] = { ...oldData.events[eventIndex], ...newEventDetails}
     Io.write(EVENT_PATH,oldData)
-    return res.status(201).json({message: "Event Updated Successfully"})
+    return res.status(201).json({data: newEventDetails, message: "Event Updated Successfully"})
 }
 
 const newRegistrationEvent = async (req, res) =>{
