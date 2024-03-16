@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require('mongoose')
 const users = require('./src/routes/users')
 const events = require("./src/routes/events");
 
@@ -10,6 +11,10 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use("/users", users);
 app.use("/events", events);
+
+mongoose.connect("mongodb://localhost:27017/event-management").then(()=>{
+    console.log("Connected to mongo")
+});
 
 
 app.listen(PORT, ()=>{
